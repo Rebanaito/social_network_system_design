@@ -1,0 +1,954 @@
+openapi: "3.0.3"
+info:
+  title: "Travelgram API"
+  description: "Социальная сеть для путешественников"
+  version: "1.0"
+
+servers:
+  - url: 'http://localhost:8000/api/v1/travelgram'
+
+tags:
+  - name: posts
+    description: "Получение и опубликование постов"
+  - name: users
+    description: "Учетные записи пользователей"
+  - name: messages
+    description: "Личные сообщения"
+  - name: places
+    description: "Места назначения"
+
+paths:
+  /posts/list:
+    get:
+      tags:
+        - posts
+      summary: "Получение списка постов (лента на основе рекомендаций)"
+      parameters:
+        - $ref: '#/components/parameters/userID'
+        
+      responses:
+        '200':
+          $ref: '#/components/responses/PostsListSuccessResponse'
+        '400':
+          $ref: '#/components/responses/ErrorWrongParameters'
+        '401':
+          $ref: '#/components/responses/ErrorUnknownUser'
+        '404':
+          $ref: '#/components/responses/ErrorResourceNotFound'
+        '4XX':
+          $ref: '#/components/responses/ErrorResponse'
+        '5XX':
+          $ref: '#/components/responses/ErrorInternalResponse'
+          
+  /posts/create:
+    post:
+      tags:
+        - posts
+      summary: "Опубликовать новый пост"
+      parameters:
+        - $ref: '#/components/parameters/userID'
+        - $ref: '#/components/parameters/post'
+        
+      responses:
+        '200':
+          $ref: '#/components/responses/PostsCreateSuccessResponse'
+        '400':
+          $ref: '#/components/responses/ErrorWrongParameters'
+        '401':
+          $ref: '#/components/responses/ErrorUnknownUser'
+        '404':
+          $ref: '#/components/responses/ErrorResourceNotFound'
+        '4XX':
+          $ref: '#/components/responses/ErrorResponse'
+        '5XX':
+          $ref: '#/components/responses/ErrorInternalResponse'
+          
+  /posts/update:
+    post:
+      tags:
+        - posts
+      summary: "Редактировать пост"
+      parameters:
+        - $ref: '#/components/parameters/userID'
+        - $ref: '#/components/parameters/postID'
+        - $ref: '#/components/parameters/post'
+        
+      responses:
+        '200':
+          $ref: '#/components/responses/PostsUpdateSuccessResponse'
+        '400':
+          $ref: '#/components/responses/ErrorWrongParameters'
+        '401':
+          $ref: '#/components/responses/ErrorUnknownUser'
+        '404':
+          $ref: '#/components/responses/ErrorResourceNotFound'
+        '4XX':
+          $ref: '#/components/responses/ErrorResponse'
+        '5XX':
+          $ref: '#/components/responses/ErrorInternalResponse'
+          
+  /posts/delete:
+    delete:
+      tags:
+        - posts
+      summary: "Удалить пост"
+      parameters:
+        - $ref: '#/components/parameters/userID'
+        - $ref: '#/components/parameters/postID'
+        
+      responses:
+        '200':
+          $ref: '#/components/responses/PostsDeleteSuccessResponse'
+        '400':
+          $ref: '#/components/responses/ErrorWrongParameters'
+        '401':
+          $ref: '#/components/responses/ErrorUnknownUser'
+        '404':
+          $ref: '#/components/responses/ErrorResourceNotFound'
+        '4XX':
+          $ref: '#/components/responses/ErrorResponse'
+        '5XX':
+          $ref: '#/components/responses/ErrorInternalResponse'
+
+  /users/search:
+    get:
+      tags:
+        - users
+      summary: "Поиск пользователей"
+      parameters:
+        - $ref: '#/components/parameters/userID'
+        - $ref: '#/components/parameters/userSearchFilters'
+
+      responses:
+        '200':
+          $ref: '#/components/responses/UsersSearchSuccessResponse'
+        '400':
+          $ref: '#/components/responses/ErrorWrongParameters'
+        '401':
+          $ref: '#/components/responses/ErrorUnknownUser'
+        '404':
+          $ref: '#/components/responses/ErrorResourceNotFound'
+        '4XX':
+          $ref: '#/components/responses/ErrorResponse'
+        '5XX':
+          $ref: '#/components/responses/ErrorInternalResponse'
+          
+  /users/details:
+    get:
+      tags:
+        - users
+      summary: "Получение информации о пользователе"
+      parameters:
+        - $ref: '#/components/parameters/userID'
+        - $ref: '#/components/parameters/usersUserID'
+        
+      responses:
+        '200':
+          $ref: '#/components/responses/UsersDetailsSuccessResponse'
+        '400':
+          $ref: '#/components/responses/ErrorWrongParameters'
+        '401':
+          $ref: '#/components/responses/ErrorUnknownUser'
+        '404':
+          $ref: '#/components/responses/ErrorResourceNotFound'
+        '4XX':
+          $ref: '#/components/responses/ErrorResponse'
+        '5XX':
+          $ref: '#/components/responses/ErrorInternalResponse'
+          
+  /users/subscriptions:
+    get:
+      tags:
+        - users
+      summary: "Просмотр подписок пользователя"
+      parameters:
+        - $ref: '#/components/parameters/userID'
+        - $ref: '#/components/parameters/usersUserID'
+        
+      responses:
+        '200':
+          $ref: '#/components/responses/UsersSubscriptionsSuccessResponse'
+        '400':
+          $ref: '#/components/responses/ErrorWrongParameters'
+        '401':
+          $ref: '#/components/responses/ErrorUnknownUser'
+        '404':
+          $ref: '#/components/responses/ErrorResourceNotFound'
+        '4XX':
+          $ref: '#/components/responses/ErrorResponse'
+        '5XX':
+          $ref: '#/components/responses/ErrorInternalResponse'
+          
+  /users/posts:
+    get:
+      tags:
+        - users
+      summary: "Просмотр поcтов пользователя"
+      parameters:
+        - $ref: '#/components/parameters/userID'
+        - $ref: '#/components/parameters/usersUserID'
+        
+      responses:
+        '200':
+          $ref: '#/components/responses/UsersPostsSuccessResponse'
+        '400':
+          $ref: '#/components/responses/ErrorWrongParameters'
+        '401':
+          $ref: '#/components/responses/ErrorUnknownUser'
+        '404':
+          $ref: '#/components/responses/ErrorResourceNotFound'
+        '4XX':
+          $ref: '#/components/responses/ErrorResponse'
+        '5XX':
+          $ref: '#/components/responses/ErrorInternalResponse'
+        
+  /users/subscribe:
+    post:
+      tags:
+        - users
+      summary: "Подписка (отписка) на пользователя"
+      parameters:
+        - $ref: '#/components/parameters/userID'
+        - $ref: '#/components/parameters/usersUserID'
+        
+      responses:
+        '200':
+          $ref: '#/components/responses/UsersSubscribeSuccessResponse'
+        '400':
+          $ref: '#/components/responses/ErrorWrongParameters'
+        '401':
+          $ref: '#/components/responses/ErrorUnknownUser'
+        '404':
+          $ref: '#/components/responses/ErrorResourceNotFound'
+        '4XX':
+          $ref: '#/components/responses/ErrorResponse'
+        '5XX':
+          $ref: '#/components/responses/ErrorInternalResponse'
+          
+  /messages/list:
+    get:
+      tags:
+        - messages
+      summary: "Проcмотр личной переписки с другим пользователем"
+      parameters:
+        - $ref: '#/components/parameters/userID'
+        - $ref: '#/components/parameters/usersUserID'
+        
+      responses:
+        '200':
+          $ref: '#/components/responses/MessagesListSuccessResponse'
+        '400':
+          $ref: '#/components/responses/ErrorWrongParameters'
+        '401':
+          $ref: '#/components/responses/ErrorUnknownUser'
+        '404':
+          $ref: '#/components/responses/ErrorResourceNotFound'
+        '4XX':
+          $ref: '#/components/responses/ErrorResponse'
+        '5XX':
+          $ref: '#/components/responses/ErrorInternalResponse'
+          
+  /messages/create:
+    post:
+      tags:
+        - messages
+      summary: "Отправка сообщения другому пользователю"
+      parameters:
+        - $ref: '#/components/parameters/userID'
+        - $ref: '#/components/parameters/usersUserID'
+        - $ref: '#/components/parameters/message'
+        
+      responses:
+        '200':
+          $ref: '#/components/responses/MessagesCreateSuccessResponse'
+        '400':
+          $ref: '#/components/responses/ErrorWrongParameters'
+        '401':
+          $ref: '#/components/responses/ErrorUnknownUser'
+        '404':
+          $ref: '#/components/responses/ErrorResourceNotFound'
+        '4XX':
+          $ref: '#/components/responses/ErrorResponse'
+        '5XX':
+          $ref: '#/components/responses/ErrorInternalResponse'
+          
+  /messages/update:
+    post:
+      tags:
+        - messages
+      summary: "Редактирование личного сообщения"
+      parameters:
+        - $ref: '#/components/parameters/userID'
+        - $ref: '#/components/parameters/messageID'
+        - $ref: '#/components/parameters/message'
+        
+      responses:
+        '200':
+          $ref: '#/components/responses/MessagesUpdateSuccessResponse'
+        '400':
+          $ref: '#/components/responses/ErrorWrongParameters'
+        '401':
+          $ref: '#/components/responses/ErrorUnknownUser'
+        '404':
+          $ref: '#/components/responses/ErrorResourceNotFound'
+        '4XX':
+          $ref: '#/components/responses/ErrorResponse'
+        '5XX':
+          $ref: '#/components/responses/ErrorInternalResponse'
+  
+  /messages/delete:
+    delete:
+      tags:
+        - messages
+      summary: "Удаление личного сообщения"
+      parameters:
+        - $ref: '#/components/parameters/userID'
+        - $ref: '#/components/parameters/messageID'
+        
+      responses:
+        '200':
+          $ref: '#/components/responses/MessagesDeleteSuccessResponse'
+        '400':
+          $ref: '#/components/responses/ErrorWrongParameters'
+        '401':
+          $ref: '#/components/responses/ErrorUnknownUser'
+        '404':
+          $ref: '#/components/responses/ErrorResourceNotFound'
+        '4XX':
+          $ref: '#/components/responses/ErrorResponse'
+        '5XX':
+          $ref: '#/components/responses/ErrorInternalResponse'
+  
+  /places/search:
+    get:
+      tags:
+        - places
+      summary: "Получение списка мест назначения"
+      parameters:
+        - $ref: '#/components/parameters/userID'
+        - $ref: '#/components/parameters/placesSearchQuery'
+      
+      responses:
+        '200':
+          $ref: '#/components/responses/PlacesSearchSuccessResponse'
+        '400':
+          $ref: '#/components/responses/ErrorWrongParameters'
+        '401':
+          $ref: '#/components/responses/ErrorUnknownUser'
+        '404':
+          $ref: '#/components/responses/ErrorResourceNotFound'
+        '4XX':
+          $ref: '#/components/responses/ErrorResponse'
+        '5XX':
+          $ref: '#/components/responses/ErrorInternalResponse'
+          
+  /places/popular:
+    get:
+      tags:
+        - places
+      summary: "Получение популярных мест назначения"
+      parameters:
+        - $ref: '#/components/parameters/userID'
+      
+      responses:
+        '200':
+          $ref: '#/components/responses/PlacesPopularSuccessResponse'
+        '400':
+          $ref: '#/components/responses/ErrorWrongParameters'
+        '401':
+          $ref: '#/components/responses/ErrorUnknownUser'
+        '404':
+          $ref: '#/components/responses/ErrorResourceNotFound'
+        '4XX':
+          $ref: '#/components/responses/ErrorResponse'
+        '5XX':
+          $ref: '#/components/responses/ErrorInternalResponse'
+          
+  /places/details:
+    get:
+      tags:
+        - places
+      summary: "Информация о месте назначения"
+      parameters:
+        - $ref: '#/components/parameters/userID'
+        - $ref: '#/components/parameters/placesSearchQuery'
+      
+      responses:
+        '200':
+          $ref: '#/components/responses/PlacesDetailsSuccessResponse'
+        '400':
+          $ref: '#/components/responses/ErrorWrongParameters'
+        '401':
+          $ref: '#/components/responses/ErrorUnknownUser'
+        '404':
+          $ref: '#/components/responses/ErrorResourceNotFound'
+        '4XX':
+          $ref: '#/components/responses/ErrorResponse'
+        '5XX':
+          $ref: '#/components/responses/ErrorInternalResponse'
+          
+  /places/create:
+    post:
+      tags:
+        - places
+      summary: "Добавление нового места назначения"
+      parameters:
+        - $ref: '#/components/parameters/userID'
+        - $ref: '#/components/parameters/place'
+        
+      responses:
+        '200':
+          $ref: '#/components/responses/PlacesCreateSuccessResponse'
+        '400':
+          $ref: '#/components/responses/ErrorWrongParameters'
+        '401':
+          $ref: '#/components/responses/ErrorUnknownUser'
+        '404':
+          $ref: '#/components/responses/ErrorResourceNotFound'
+        '4XX':
+          $ref: '#/components/responses/ErrorResponse'
+        '5XX':
+          $ref: '#/components/responses/ErrorInternalResponse'
+          
+  /places/update:
+    post:
+      tags:
+        - places
+      summary: "Редактирование места назначения"
+      parameters:
+        - $ref: '#/components/parameters/userID'
+        - $ref: '#/components/parameters/placeID'
+        - $ref: '#/components/parameters/place'
+        
+      responses:
+        '200':
+          $ref: '#/components/responses/PlacesUpdateSuccessResponse'
+        '400':
+          $ref: '#/components/responses/ErrorWrongParameters'
+        '401':
+          $ref: '#/components/responses/ErrorUnknownUser'
+        '404':
+          $ref: '#/components/responses/ErrorResourceNotFound'
+        '4XX':
+          $ref: '#/components/responses/ErrorResponse'
+        '5XX':
+          $ref: '#/components/responses/ErrorInternalResponse'
+          
+  /places/delete:
+    delete:
+      tags:
+        - places
+      summary: "Удаление места назначения"
+      parameters:
+        - $ref: '#/components/parameters/userID'
+        - $ref: '#/components/parameters/placeID'
+        
+      responses:
+        '200':
+          $ref: '#/components/responses/PlacesUpdateSuccessResponse'
+        '400':
+          $ref: '#/components/responses/ErrorWrongParameters'
+        '401':
+          $ref: '#/components/responses/ErrorUnknownUser'
+        '404':
+          $ref: '#/components/responses/ErrorResourceNotFound'
+        '4XX':
+          $ref: '#/components/responses/ErrorResponse'
+        '5XX':
+          $ref: '#/components/responses/ErrorInternalResponse'
+
+
+components:
+  responses:
+  
+    PostsListSuccessResponse:
+      description: "Список постов"
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: object
+                properties:
+                  posts:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/post'
+                      
+    PostsCreateSuccessResponse:
+      description: "Публикация поста"
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              postID:
+                type: integer
+                format: uint
+                example: 1865
+                
+    PostsUpdateSuccessResponse:
+      description: "Публикация поста"
+      content:
+        application/json:
+          schema:
+            type: object
+            
+    PostsDeleteSuccessResponse:
+      description: "Публикация поста"
+      content:
+        application/json:
+          schema:
+            type: object
+            
+    UsersSearchSuccessResponse:
+      description: "Поиск пользователей"
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+                type: object
+                properties:
+                  userID:
+                    type: integer
+                  someData:
+                    type: object
+    
+    UsersDetailsSuccessResponse:
+      description: "Детальная информация о пользователе"
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              userID:
+                type: integer
+                format: uint
+                example: 123
+              someData:
+                type: object
+                
+    UsersSubscriptionsSuccessResponse:
+      description: "Список подписок другого пользователя"
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+                type: object
+                properties:
+                  userID:
+                    type: integer
+                    format: uint
+                    example: 123
+                  someData:
+                    type: object
+                    
+    UsersPostsSuccessResponse:
+      description: "Детальная информация о пользователе"
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                postID:
+                  type: integer
+                  format: uint
+                  example: 123
+                text:
+                  type: string
+                  example: "Kazan is awesome!"
+                attachments:
+                  type: array
+                  items:
+                    type: object
+                    
+    UsersSubscribeSuccessResponse:
+      description: "Детальная информация о пользователе"
+      content:
+        application/json:
+          schema:
+            type: object
+            
+    MessagesListSuccessResponse:
+      description: "Получение переписки с пользователем"
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/message'
+                    
+    MessagesCreateSuccessResponse:
+      description: "Отправка нового сообщения"
+      content:
+        application/json:
+          schema:
+            type: object
+            
+    MessagesUpdateSuccessResponse:
+      description: "Редактирование сообщения"
+      content:
+        application/json:
+          schema:
+            type: object
+            
+    MessagesDeleteSuccessResponse:
+      description: "Удаление сообщения"
+      content:
+        application/json:
+          schema:
+            type: object
+            
+    PlacesSearchSuccessResponse:
+      description: "Поиск мест назначения"
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/place'
+              
+    PlacesPopularSuccessResponse:
+      description: "Популярные места назначения"
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/place'
+              
+    PlacesDetailsSuccessResponse:
+      description: "Детальная информация о месте"
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/place'
+            
+    PlacesCreateSuccessResponse:
+      description: "Создание записи о месте"
+      content:
+        application/json:
+          schema:
+            type: object
+            
+    PlacesUpdateSuccessResponse:
+      description: "Редактирование записи о месте"
+      content:
+        application/json:
+          schema:
+            type: object
+            
+    PlacesDeleteSuccessResponse:
+      description: "Удаление записи о месте"
+      content:
+        application/json:
+          schema:
+            type: object
+      
+    ErrorResponse:
+      description: "Ответ сервера на непредвиденную пользовательскую ошибку"
+      content:
+        application/json:
+          schema:
+            type: object
+            required: ["errorText"]
+            properties:
+              errorText:
+                type: string
+                example: "Unknown error"
+
+    ErrorInternalResponse:
+      description: "Ответ сервиса когда он столкнулся с непредвиденной ситуацией, которая не позволила ему выполнить запрос"
+      content:
+        application/json:
+          schema:
+            type: object
+            required: ["errorText"]
+            properties:
+              errorText:
+                type: string
+                example: "Internal server error"
+
+    ErrorUnknownUser:
+      description: "Ответ сервиса на неавторизованный запрос"
+      content:
+        application/json:
+          schema:
+            type: object
+            required: ["errorText"]
+            properties:
+              errorText:
+                type: string
+                example: "Unknown user"
+
+    ErrorResourceNotFound:
+      description: "Ответ сервиса когда объект не существует"
+      content:
+        application/json:
+          schema:
+            type: object
+            required: ["errorText"]
+            properties:
+              errorText:
+                type: string
+                example: "Resource not found"
+
+    ErrorUnprocessableEntity:
+      description: "Ответ сервиса когда не удалось обработать содержимое объекта"
+      content:
+        application/json:
+          schema:
+            type: object
+            required: [ "errorText" ]
+            properties:
+              errorText:
+                type: string
+                example: "Unprocessable Entity"
+
+    ErrorFailedParseData:
+      description: "Ошибка обработки данных"
+      content:
+        application/json:
+          schema:
+            type: object
+            required: ["errorText"]
+            properties:
+              errorText:
+                type: string
+                example: "Failed to parse data"
+
+    ErrorWrongParameters:
+      description: "Ответ сервиса на не корректный запрос"
+      content:
+        application/json:
+          schema:
+            type: object
+            required: ["errorText"]
+            properties:
+              errorText:
+                type: string
+                example: "Invalid query params"
+
+  requestBodies:
+    SupplierTaskRequest:
+      required: true
+      description: "Загрузка задания"
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: object
+                properties:
+                  promotionID:
+                    type: integer
+                    description: "Идентификатор периода"
+                    example: 1
+                    minimum: 1
+                  uploadNow:
+                    type: boolean
+                    description: "Установить скидку сейчас (true) или в момент старта акций (false)"
+                    example: true
+                  nomenclatures:
+                    type: array
+                    description: "Список идентификаторов номенклатур которые не участвуют"
+                    items:
+                      type: integer
+                      example: [1, 3, 642]
+                      minimum: 1
+                    minItems: 1
+                    maxItems: 1000
+                    uniqueItems: true
+
+  schemas:
+    post:
+      type: object
+      properties:
+        postID:
+          type: integer
+          example: 1776
+          description: "идентификатор поста"
+        postText:
+          type: string
+          example: "Kazan is the best!!!"
+          description: "текст поста"
+        attachments:
+          type: array
+          items:
+            type: string
+            example: "frontend.bucket.url"
+            description: "ссылка на место хранения картинки/видео"
+            
+    message:
+      type: object
+      properties:
+        messageID:
+          type: integer
+          format: uint
+        text:
+          type: string
+          example: "Hello there!"
+        attachments:
+          type: array
+          items:
+            type: object
+            
+    place:
+      type: object
+      properties:
+        placeID:
+          type: integer
+          format: uint
+          example: 123
+        description:
+          type: string
+          example: "Vibrant place..."
+        comments:
+          type: array
+          items:
+            type: object
+            properties:
+              commentID:
+                type: integer
+                format: uint
+                example: 123
+              userID:
+                type: integer
+                format: uint
+                example: 456
+              text:
+                type: string
+                example: "I've been there!"
+              attachments:
+                type: array
+                items:
+                  type: object
+
+  parameters:
+    userID:
+      in: header
+      name: X-User-Id
+      example: 12345
+      schema:
+        type: integer
+        format: uint
+      required: true
+    supplierID:
+      in: header
+      name: X-Supplier-Id
+      example: fb25c9e9-cae8-52db-b68e-736c1466a3f5
+      schema:
+        type: string
+        format: uuid
+      required: true
+    oldSupplierID:
+      in: header
+      name: X-Old-Supplier-Id
+      example: 8759
+      schema:
+        type: integer
+        format: int
+        default: 0
+      required: true
+    realIP:
+      in: header
+      name: X-Real-Ip
+      example: 1.1.1.1
+      schema:
+        type: string
+        format: ipv4
+      required: true
+    forwardedFor:
+      in: header
+      name: X-Forwarded-For
+      example: 1.1.1.1
+      schema:
+        type: string
+      required: true
+    post:
+      in: query
+      name: Post
+      schema:
+        type: object
+        properties:
+          text:
+            type: string
+            example: "Kazan is the Best!"
+          attachments:
+            type: array
+            items:
+              type: object
+      required: true
+    postID:
+      in: query
+      name: PostID
+      schema:
+        type: integer
+        format: uint
+      required: true
+    userSearchFilters:
+      in: query
+      name: SearchFilters
+      schema:
+        type: object
+        properties:
+          filter1:
+            type: boolean
+            example: true
+          filter2:
+            type: boolean
+            example: false
+      required: true
+    usersUserID:
+      in: query
+      name: UserID
+      schema:
+        type: integer
+        format: uint
+      required: true
+    message:
+      in: query
+      name: Message
+      schema:
+        $ref: '#/components/schemas/message'
+      required: true
+    messageID:
+      in: query
+      name: MessageID
+      schema:
+        type: integer
+        format: uint
+        example: 54321
+      required: true
+    placesSearchQuery:
+      in: query
+      name: Query
+      schema:
+        type: object
+        properties:
+          name:
+            type: string
+            example: "Kazan"
+          filters:
+            type: object
+      required: true
+    place:
+      in: query
+      name: Place
+      schema:
+        $ref: '#/components/schemas/place'
+      required: true
+    placeID:
+      in: query
+      name: PlaceID
+      schema:
+        type: integer
+        format: uint
+        example: 789
+      required: true
